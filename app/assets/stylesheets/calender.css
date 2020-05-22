@@ -115,3 +115,8 @@ h1.title {
 .calendar-day > .events > .event > .progress {
     height: 10px;
 }
+a,
+a label {
+    cursor: pointer;
+    text-decoration: none !important;
+}

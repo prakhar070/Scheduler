@@ -1,0 +1,29 @@
+<div class="container">
+    <h1 class="title text-center mb-3">
+        <%= @details[:month_name] %> <%= @details[:year] %>
+    </h1>
+    <div class="calendar" data-toggle="calendar">
+        <div class="row">
+            <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+            <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+
+            <% for day in 1..33 do %>
+                <% if day>@details[:days] %>
+                    <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+                <% elsif (day+1).modulo(7) === 0 %>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 calendar-day ">
+                    <span style="float:right" class="mr-2 mt-1"><%= day %></span>
+                    <a  data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                    </div>
+                <% else %>
+                <div class="col-xs-12 calendar-day ">
+                    <span style="float:right" class="mr-2 mt-1"><%= day %></span>
+                    <a  data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                </div>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>

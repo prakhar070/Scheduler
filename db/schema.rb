@@ -10,13 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_095337) do
+ActiveRecord::Schema.define(version: 2020_05_22_154410) do
 
   create_table "interviews", force: :cascade do |t|
     t.datetime "tstamp"
-    t.integer "interviewer_id", optional: true
+    t.integer "interviewer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "interviews_users", id: false, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "interview_id", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -24,7 +29,6 @@ ActiveRecord::Schema.define(version: 2020_05_21_095337) do
     t.string "lastname"
     t.string "email"
     t.string "password_digest"
-    t.integer "interview_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

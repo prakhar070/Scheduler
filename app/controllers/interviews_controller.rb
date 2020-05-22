@@ -4,14 +4,21 @@ class InterviewsController < ApplicationController
     end
 
     def create
-        @dt = DateTime.new(
+        dt = DateTime.new(
             params[:year].to_i, 
             params[:month].to_i, 
             params[:day].to_i, 
             params[:time].split(":")[0].to_i,
             params[:time].split(":")[1].to_i
         )
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", @dt)
+        @new_interview = Interview.new(tstamp: dt, interviewer_id: 1)
+        @participants = User.where(id: params[:participants])
+        @new_interview.save
+        @participants.each do |participant|
+            @new_interview.participants << participant
+        end
+        @new_interview.save
+        redirect_to interviews_path
     end
 
     private

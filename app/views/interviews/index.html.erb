@@ -32,24 +32,27 @@
         <h4 class="modal-title">Create a new interview </h4>
       </div>
         <div class="modal-body">
-            <%= form_for Interview.new do |f| %>
+            <%= form_tag interviews_path do %>
+                <%= hidden_field_tag :day %>
+                <%= hidden_field_tag :month %>
+                <%= hidden_field_tag :year %>
+
                 <div class="form-group">
-                    <%= f.label :tstamp, "Interview Date and Time" %><br />
-                    <%= f.time_select :tstamp, :ignore_date => true, class: "form-control" %>
+                    <label>Select time for the interview </label><br />
+                    <%= time_field_tag :time, :ignore_date => true, class: "form-control" %>
                 </div>
 
                 <div class="form-group">
 
-                    <%= f.label "Add Participants" %><br />
+                    <label> Add Participants</label><br />
                     <select class="custom-select form-control" name="participants[]" multiple>
                         <%= User.all.each do |participant| %>
                         <option value="<%= participant.id %>"><%= participant.firstname.concat(" ").concat(participant.lastname) %></option>
                         <% end %>
                     </select>
                     <small id="optionHelp" class="form-text text-muted">Hold ctrl Key to add multiple participants</small>
-
                 </div>
-                <%= f.submit "Schedule" , class: "btn btn-primary" %>
+                <%= submit_tag "Schedule" , class: "btn btn-primary" %>
             <% end %>
         </div>
             

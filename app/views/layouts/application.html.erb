@@ -12,7 +12,12 @@
 
 <body>
     <%= yield %>
+    <script type="text/javascript">
+        $(document).on("click", "#openModal", function() {
+            $("#myModal #day").val($(this).siblings('#day').text())
+            $("#myModal #month").val($('#month').text())
+            $("#myModal #year").val($("#year").text())
+        });
+    </script>
 </body>
-
 </html>
-

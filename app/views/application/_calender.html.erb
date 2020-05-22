@@ -1,6 +1,8 @@
 <div class="container">
     <h1 class="title text-center mb-3">
-        <%= @details[:month_name] %> <%= @details[:year] %>
+        <span style="display:none" id="month"><%= @details[:month] %></span> 
+        <span><%= Date::MONTHNAMES[@details[:month]] %></span> 
+        <span id="year"><%= @details[:year] %></span>
     </h1>
     <div class="calendar" data-toggle="calendar">
         <div class="row">
@@ -14,13 +16,13 @@
                     </div>
                     <div class="row">
                     <div class="col-xs-12 calendar-day ">
-                    <span style="float:right" class="mr-2 mt-1"><%= day %></span>
-                    <a  data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                        <span id="day" style="float:right" class="mr-2 mt-1"><%= day %></span>
+                        <a  id="openModal" data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
                     </div>
                 <% else %>
                 <div class="col-xs-12 calendar-day ">
-                    <span style="float:right" class="mr-2 mt-1"><%= day %></span>
-                    <a  data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                    <span id="day" style="float:right" class="mr-2 mt-1"><%= day %></span>
+                    <a  id="openModal" data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
                 </div>
                 <% end %>
             <% end %>

@@ -11,12 +11,43 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#">Scheduler</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Interviews</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <%= yield %>
+    <%= render partial:"modal" %>
+    
     <script type="text/javascript">
         $(document).on("click", "#openModal", function() {
             $("#myModal #day").val($(this).siblings('#day').text())
-            $("#myModal #month").val($('#month').text())
-            $("#myModal #year").val($("#year").text())
+            $("#myModal #month").val($('#monthspan').text())
+            $("#myModal #year").val($("#yearspan").text())
+        });
+
+        $('#submit').click(function() {
+            var month = parseInt($('#month').val());
+            var year = parseInt($('#year').val());
+            if (isNaN(month) || isNaN(year)) {
+                $('#error-message').text("only numeric values are allowed")
+                return false;
+            } 
+            else if (month > 12 || month < 1) {
+                $('#error-message').text("please enter a valid month number")
+                return false;
+            }
+            else if (year > 2050 || year < 1900) {
+                $('#error-message').text("please enter a valid year number")
+                return false;
+            }
+            $('#indexform').submit();
         });
     </script>
 </body>

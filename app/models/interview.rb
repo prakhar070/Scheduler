@@ -1,6 +1,5 @@
 class Interview < ApplicationRecord
-
-
+    #an interview has many attached resumes (used active storage for this)
     has_many_attached :resumes
     #an interview must have a column for an interviewer_id, i.e the user who created that interview
     belongs_to :interviewer, :class_name => "User"
@@ -21,6 +20,7 @@ class Interview < ApplicationRecord
         where("date(starttime) == ? OR date(endtime) == ?", date, date)
     end
 
+    #this function checks if any of the participants of the interview is busy at the scheduled time
     def members_available
         self.participants.each do |participant|
             if id.nil?
@@ -50,6 +50,7 @@ class Interview < ApplicationRecord
         end
     end
 
+    #this function ensures that the start and the end times must be different and the date must not be from the past
     def date_must_make_sense
         if starttime.present? and endtime.present?  and starttime >= endtime
             errors.add(:starttime, "ensure that the starttime is less than the endtime of the interview")
@@ -58,6 +59,7 @@ class Interview < ApplicationRecord
         end
     end
 
+    #this function schedules a reminder
     def schedule_reminder
         min = (self.starttime - Time.now)
         min = (min.to_i - 19800)/60 - 30
@@ -68,6 +70,7 @@ class Interview < ApplicationRecord
         end
     end
     
+    #this function sends a mail to all the participants about a new interview
     def new_mail_info
         self.participants.each do |participant|
             SendNewMailWorker.perform_async(participant.email)

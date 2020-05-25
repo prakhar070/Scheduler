@@ -11,9 +11,4 @@ class User < ApplicationRecord
   validates :lastname, presence: true, length: { minimum: 2 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  # #this function fetches all the users those have pending interviews with timestamp within an hour of the time stamp provided
-  # def self.users_busy?(dt)
-  #   where("date(tstamp) == ?", date)
-  # end
-
 end

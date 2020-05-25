@@ -20,6 +20,8 @@ class InterviewsController < ApplicationController
     def create
         #create a new interview with the datetime object created as timestamp, interviewer_id as 1 (I have kept it constant just for now, will change it when I will use authentication), and title as the title present in the params
         @interview = Interview.new(starttime: @sdt, endtime: @edt, interviewer_id: current_user.id, title: params[:title])
+
+        #we have passed a resumes array to the params, attach it to the interview object
         @interview.resumes.attach(params[:resumes])
         
         #the params also has an array of participant ids, we will fetch all the users with those ids in @participants variable
@@ -30,12 +32,13 @@ class InterviewsController < ApplicationController
         end
         #finally we will save the interview
         if @interview.save
-            #send mails to all the participants of the interview
+            #schedule a reminder for the mail that has to be sent 30 min before the starttime
             @interview.schedule_reminder
-            #always send a new interview mail
+            #send a mail to the participants of the interview informing them about a new interview
             @interview.new_mail_info
         end
         
+        #this function constructs an @interviews relation that is needed in our view (for the side column)
         fetch_interviews_for_user
         #in either of the cases, if error or no error, we will render the index page
         render :index

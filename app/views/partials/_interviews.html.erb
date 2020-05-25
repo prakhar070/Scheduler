@@ -11,13 +11,21 @@
 
                  <div class="form-group">
                     <label>Select date for the interview </label><br />
-                    <%= date_field_tag :date, edit_interview.tstamp.strftime("%Y-%m-%d") %>
+                    <%= date_field_tag :date, edit_interview.starttime.strftime("%Y-%m-%d") %>
                 </div>
 
                 <div class="form-group">
-                    <label>Select time for the interview </label><br />
-                    <%= time_field_tag :time, edit_interview.tstamp.strftime("%H:%M"), :ignore_date => true %>
+                    <% if edit_interview.errors[:starttime].any? %><p id="error-message"><%= edit_interview.errors[:starttime][0] %></p><% end %>
+                    <label>Select start time for the interview </label><br />
+                    <%= time_field_tag :starttime, edit_interview.starttime.strftime("%H:%M"), :ignore_date => true %>
                 </div>
+
+                <div class="form-group">
+                    <% if edit_interview.errors[:endtime].any? %><p id="error-message"><%= edit_interview.errors[:endtime][0] %></p><% end %>
+                    <label>Select end time for the interview </label><br />
+                    <%= time_field_tag :endtime, edit_interview.endtime.strftime("%H:%M"), :ignore_date => true %>
+                </div>
+                
 
                 <div class="form-group">
                     <% if edit_interview.errors[:participants].any? %><p id="error-message"><%= edit_interview.errors[:participants][0] %></p><% end %>
@@ -33,10 +41,12 @@
             <% end %>
 
         <% else %>
-        <%= link_to  "Edit", edit_interview_path(interview.id, month: details[:month], year: details[:year], day: interview.tstamp.day ),  style: "float:right" %>
+        <% if interview.interviewer_id == current_user.id %>
+            <%= link_to  "Edit", edit_interview_path(interview.id, month: details[:month], year: details[:year], day: interview.starttime.day ),  style: "float:right" %>
+        <% end %>
         <%= link_to  "Back", interviews_path(month: details[:month], year: details[:year]) %>
         <h4 class="text-center"><%= interview.title %></h4>
-        <h5 class="text-muted"><%= interview.tstamp.to_formatted_s(:long_ordinal) %></h5>
+        <h5 class="text-muted"><%= interview.starttime.to_formatted_s(:long_ordinal) %> | <%= interview.endtime.to_formatted_s(:long_ordinal) %></h5> 
         <h5> Organizer - <%= User.find(interview.interviewer_id).firstname %> </h5>
         <h5> Participants </h5>
         <ul class="list-inline">
@@ -44,8 +54,18 @@
             <li class="text-muted"><%= participant.firstname + " " + participant.lastname %></li>
             <% end %>
         </ul>
-         <%= link_to  "Delete", interview_path(interview.id, month: details[:month], year: details[:year], day: interview.tstamp.day ), method: :delete %>
+        <h5> Resumes </h5>
+        <% if interview.resumes.attached? %>
+            <% interview.resumes.each do |resume| %>
+                <%= link_to "resume#{(0...8).map { (65 + rand(26)).chr }.join}", rails_blob_path(resume, disposition: 'preview') %><br />
+            <% end %>
+        <% end %>
+        <br/>
+        <% if interview.interviewer_id == current_user.id %>
+            <%= link_to  "Delete", interview_path(interview.id, month: details[:month], year: details[:year], day: interview.starttime.day ), method: :delete %>
+        <% end %>
         <% end %>
     </li>
     <% end %>
 </ul>
+

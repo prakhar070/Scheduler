@@ -1,0 +1,38 @@
+<div class="container">
+    <!-- user registration form -->
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <p class="text-center">Get started with your free account</p>
+            <%= form_for @user do |f| %>
+            <% if @user.errors[:firstname].any? %><span id="error"><%= @user.errors[:firstname][0] %></span><% end %>
+            <div class="form-group input-group">
+                <%= f.text_field :firstname , class: "form-control mb-2 mr-sm-2" ,placeholder: "firstname" %>
+            </div>
+
+            <% if @user.errors[:lastname].any? %><span id="error"><%= @user.errors[:lastname][0] %></span><% end %>
+            <div class="form-group input-group">
+                <%= f.text_field :lastname , class: "form-control mb-2 mr-sm-2" ,placeholder: "lastname" %>
+            </div>
+
+            <% if @user.errors[:email].any? %><span id="error"><%= @user.errors[:email][0] %></span><% end %>
+            <div class="form-group input-group">
+                <%= f.email_field :email , class: "form-control mb-2 mr-sm-2" ,placeholder: "email" %>
+            </div>
+            <% if @user.errors[:password].any? %><span id="error"><%= @user.errors[:password][0] %></span><% end %>
+            <div class="form-group input-group">
+                <%= f.password_field :password , class: "form-control mb-2 mr-sm-2" ,placeholder: "password" %>
+            </div>
+            <% if @user.errors[:password_confirmation].any? %><span id="error"><%= @user.errors[:password_confirmation][0] %></span><% end %>
+            <div class="form-group input-group">
+                <%= f.password_field :password_confirmation , class: "form-control mb-2 mr-sm-2" ,placeholder: "confirm password" %>
+            </div>
+            <div class="form-group">
+                <%= f.submit  "Create Account", class: "btn btn-primary" %>
+            </div>
+            <% end %>
+            <p class="text-center">Have an account? <%= link_to  "Log In", new_session_path %></p>
+        </article>
+    </div> <!-- card.// -->
+
+</div>

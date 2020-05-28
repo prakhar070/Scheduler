@@ -3,6 +3,7 @@ class SendReminderMailWorker
 
   def perform(email)
     UserMailer.generate_reminder_mail(email).deliver
+    return self.jid
   end
 end
 

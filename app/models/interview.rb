@@ -1,3 +1,4 @@
+require 'sidekiq/api'
 class Interview < ApplicationRecord
     #an interview has many attached resumes (used active storage for this)
     has_many_attached :resumes
@@ -65,7 +66,8 @@ class Interview < ApplicationRecord
         min = (min.to_i - 19800)/60 - 30
         if min>0
             self.participants.each do |participant|
-                SendReminderMailWorker.perform_in(min.minutes, participant.email)
+                scheduled_job_id = SendReminderMailWorker.perform_in(min.minutes, participant.email)
+                Job.create(interview_id: self.id, scheduled_job_id: scheduled_job_id)
             end
         end
     end
@@ -75,5 +77,15 @@ class Interview < ApplicationRecord
         self.participants.each do |participant|
             SendNewMailWorker.perform_async(participant.email)
         end
+    end
+
+    def update_reminder
+        scheduled_jobs = Job.where(interview_id: self.id)
+        for scheduled_job in scheduled_jobs
+            Sidekiq::ScheduledSet.new.each do |job|
+                job.delete if job.jid == scheduled_job.scheduled_job_id
+            end                
+        end
+        self.schedule_reminder
     end
 end

@@ -7,6 +7,7 @@ gem 'dotenv-rails', '~> 2.7', '>= 2.7.5'
 #Simple, efficient background processing for Ruby.
 gem 'sidekiq', '~> 6.0', '>= 6.0.7'
 
+gem 'sidekiq-status'
 
 gem 'paperclip', '~> 6.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

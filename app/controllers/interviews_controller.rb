@@ -53,6 +53,8 @@ class InterviewsController < ApplicationController
         #find the interview object via the id stored in params
         @interview = Interview.find(params[:id])
         if @interview.update(starttime: @sdt, endtime: @edt, title: params[:title])
+            #update the reminders
+            @interview.update_reminder
             fetch_interviews_for_user
             render :index
         else

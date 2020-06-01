@@ -1,0 +1,31 @@
+    <h1 class="title text-center mb-3">
+        <span style="display:none" id="monthspan"><%= @details[:month] %></span>
+        <span><%= Date::MONTHNAMES[@details[:month]] %></span>
+        <span id="yearspan"><%= @details[:year] %></span>
+    </h1>
+    <div class="calendar" data-toggle="calendar">
+        <div class="row">
+            <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+            <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+
+            <% for day in 1..33 do %>
+                <% if day>@details[:days] %>
+                    <div class="col-xs-12 calendar-day calendar-no-current-month"></div>
+                <% elsif (day+1).modulo(7) === 0 %>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 calendar-day ">
+                            <span id="day" style="float:right" class="mr-2 mt-1"><h3><%= day %></h3></span>
+                            <%= link_to  "Events", interviews_path(month: @details[:month], year: @details[:year], day: "#{day}"), id:"see-events" %>
+                            <a id="openModal" data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                        </div>
+                <% else %>
+                    <div class="col-xs-12 calendar-day ">
+                        <span id="day" style="float:right" class="mr-2 mt-1"><h3><%= day %></h3></span>
+                        <%= link_to  "events", interviews_path(month: @details[:month], year: @details[:year], day: "#{day}"), id:"see-events" %>
+                        <a id="openModal" data-toggle="modal" data-target="#myModal"><h2>+</h2></a>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+    </div>

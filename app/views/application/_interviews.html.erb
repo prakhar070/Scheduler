@@ -1,0 +1,51 @@
+<ul class="list-group">
+    <% interviews.each do |interview| %>
+    <li class="list-group-item">
+        <% if edit_interview && interview.id == edit_interview.id %>
+            <%= form_tag(interview_path, method: :put ) do %>
+                <div class="form-group">
+                    <% if edit_interview.errors[:title].any? %><p id="error-message"><%= edit_interview.errors[:title][0] %></p><% end %>
+                    <label>Title </label><br />
+                    <%= text_field_tag :title, edit_interview.title %>
+                </div>
+
+                 <div class="form-group">
+                    <label>Select date for the interview </label><br />
+                    <%= date_field_tag :date, edit_interview.tstamp.strftime("%Y-%m-%d") %>
+                </div>
+
+                <div class="form-group">
+                    <label>Select time for the interview </label><br />
+                    <%= time_field_tag :time, edit_interview.tstamp.strftime("%H:%M"), :ignore_date => true %>
+                </div>
+
+                <div class="form-group">
+                    <% if edit_interview.errors[:participants].any? %><p id="error-message"><%= edit_interview.errors[:participants][0] %></p><% end %>
+                    <label> Add Participants</label><br />
+                    <select class="custom-select form-control" name="participants[]" multiple>
+                        <%= User.all.each do |participant| %>
+                        <option value="<%= participant.id %>"><%= participant.firstname.concat(" ").concat(participant.lastname) %></option>
+                        <% end %>
+                    </select>
+                    <small id="optionHelp" class="form-text text-muted">Hold ctrl Key to add multiple participants</small>
+                </div>
+                <%= submit_tag "Schedule" , class: "btn btn-primary" %>
+            <% end %>
+
+        <% else %>
+        <%= link_to  "Edit", edit_interview_path(interview.id, month: details[:month], year: details[:year], day: interview.tstamp.day ),  style: "float:right" %>
+        <%= link_to  "Back", interviews_path(month: details[:month], year: details[:year]) %>
+        <h4 class="text-center"><%= interview.title %></h4>
+        <h5 class="text-muted"><%= interview.tstamp.to_formatted_s(:long_ordinal) %></h5>
+        <h5> Organizer - <%= User.find(interview.interviewer_id).firstname %> </h5>
+        <h5> Participants </h5>
+        <ul class="list-inline">
+            <% interview.participants.each do |participant| %>
+            <li class="text-muted"><%= participant.firstname + " " + participant.lastname %></li>
+            <% end %>
+        </ul>
+         <%= link_to  "Delete", interview_path(interview.id, month: details[:month], year: details[:year], day: interview.tstamp.day ), method: :delete %>
+        <% end %>
+    </li>
+    <% end %>
+</ul>

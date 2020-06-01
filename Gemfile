@@ -2,7 +2,13 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
+#Autoload dotenv in Rails.
+gem 'dotenv-rails', '~> 2.7', '>= 2.7.5'
+#Simple, efficient background processing for Ruby.
+gem 'sidekiq', '~> 6.0', '>= 6.0.7'
 
+
+gem 'paperclip', '~> 6.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
 # Use sqlite3 as the database for Active Record

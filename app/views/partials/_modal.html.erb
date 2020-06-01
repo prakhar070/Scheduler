@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Create a new interview </h4>
             </div>
             <div class="modal-body">
-                <%= form_tag interviews_path do %>
+                <%= form_tag interviews_path , multipart: true do %>
                 <%= hidden_field_tag :day %>
                 <%= hidden_field_tag :month %>
                 <%= hidden_field_tag :year %>
@@ -18,20 +18,31 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Select time for the interview </label><br />
-                    <%= time_field_tag :time, :ignore_date => true %>
+                    <label>Select start time for the interview </label><br />
+                    <%= time_field_tag :starttime, :ignore_date => true %>
+                </div>
+
+                <div class="form-group">
+                    <label>Select end time for the interview </label><br />
+                    <%= time_field_tag :endtime, :ignore_date => true %>
                 </div>
 
                 <div class="form-group">
 
                     <label> Add Participants</label><br />
                     <select class="custom-select form-control" name="participants[]" multiple>
-                        <%= User.all.each do |participant| %>
+                        <%= User.where.not(id: current_user.id).each do |participant| %>
                         <option value="<%= participant.id %>"><%= participant.firstname.concat(" ").concat(participant.lastname) %></option>
                         <% end %>
                     </select>
                     <small id="optionHelp" class="form-text text-muted">Hold ctrl Key to add multiple participants</small>
                 </div>
+
+                <div class="form-group">
+                    <label> Add Resumes </label><br />
+                    <%= file_field_tag :resumes, name: 'resumes[]', multiple: true, class: 'btn btn-primary', required: true %>
+                </div>
+
                 <%= submit_tag "Schedule" , class: "btn btn-primary" %>
                 <% end %>
             </div>

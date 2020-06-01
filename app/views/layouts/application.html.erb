@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Scheduler</title>
     <%= csrf_meta_tags %>
@@ -14,17 +13,21 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-            <a class="navbar-brand" href="#">Scheduler</a>
+                <a class="navbar-brand" href="#">Scheduler</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Interviews</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <% if logged_in? %>
+                <li><%= link_to "LOGOUT", session_path(current_user), method: :delete ,class: "active"%></li>
+                <% end %>
             </ul>
         </div>
     </nav>
 
     <%= yield %>
-    <%= render partial:"modal" %>
-    
+
     <script type="text/javascript">
         $(document).on("click", "#openModal", function() {
             $("#myModal #day").val($(this).siblings('#day').text())
@@ -38,12 +41,10 @@
             if (isNaN(month) || isNaN(year)) {
                 $('#error-message').text("only numeric values are allowed")
                 return false;
-            } 
-            else if (month > 12 || month < 1) {
+            } else if (month > 12 || month < 1) {
                 $('#error-message').text("please enter a valid month number")
                 return false;
-            }
-            else if (year > 2050 || year < 1900) {
+            } else if (year > 2050 || year < 1900) {
                 $('#error-message').text("please enter a valid year number")
                 return false;
             }
@@ -51,4 +52,5 @@
         });
     </script>
 </body>
+
 </html>

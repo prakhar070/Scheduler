@@ -4,7 +4,7 @@
           <p id="error-message"><%= error_message if @interview.errors.full_messages.first == error_message %> </p>
         <% end %>
     <% end %>
-    <%= render partial:"header_form"%>
+    <%= render partial:"/partials/header_form"%>
     <div class="offset-md-4"></div>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="row">
         <% if @details[:day].present? %>
         <div class="col-md-8">
-            <%= render partial:"calender", locals: @details %>
+            <%= render partial:"/partials/calender", locals: @details %>
         </div>
         <div class="col-md-4">
             <% if @interviews.count > 0 %>
@@ -21,13 +21,15 @@
             <% else %>
               <h1 class="text-center"> No Interviews </h1>
             <% end %>
-            <%= render partial:"interviews", locals: {interviews: @interviews, details: @details, edit_interview: @edit_interview} %>
+            <%= render partial:"/partials/interviews", locals: {interviews: @interviews, details: @details, edit_interview: @edit_interview} %>
         </div>
 
         <% else %>
         <div class="col-md-12">
-            <%= render partial:"calender", locals: @details %>
+            <%= render partial:"/partials/calender", locals: @details %>
         </div>
         <% end %>
     </div>
 </div>
+
+<%= render partial:"/partials/modal" %>
